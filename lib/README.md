@@ -90,6 +90,47 @@ pry>code:
 
 
 
+#Hard Mode
+
+##Q1. What item was ordered most often? Grossed the most money?
+
+pry>code:
+         Items.select('title, items.id, count(*)').joins('join orders on items.id = orders.item_id').order('count(*) desc').group('items.id').limit(5).each do |x|
+         print "#{x[:title]} ID:#{x[:id]} Count:#{x['count(*)']}\n"
+         end
+
+a:  Ergonomic Concrete Gloves ID:10 Count:9
+    Practical Rubber Computer ID:46 Count:9
+    Incredible Granite Car ID:65 Count:9
+    Ergonomic Granite Computer ID:68 Count:8
+    Small Plastic Pants ID:13 Count:7
+
+
+
+##Q2. What user spent the most?
+
+pry>code:
+         x = Items.select('items.id, category, title, first_name, last_name, users.id as "user_id", sum(price * quantity)').joins('join orders on items.id = orders.item_id join users on users.id = orders.user_id').order('sum(price * quantity) desc').group('users.id').take
+
+         puts "Name: #{x[:first_name]} #{x[:last_name]} Grossing: #{x['sum(price * quantity)']}"
+
+a: Name: Hassan Runte Grossing: 639386
+
+
+##Q3. What were the top 3 highest grossing categories?
+
+pry>code:
+        Items.select('category, sum(price * quantity)').joins('join orders on items.id = orders.item_id').order('sum(price * quantity) desc').group('category').limit(3).each do |x|
+        puts "Category: #{x[:category]} Grossing: #{x['sum(price * quantity)']}"
+        end
+
+a:  Category: Music, Sports & Clothing Grossing: 525240
+    Category: Beauty, Toys & Sports Grossing: 449496
+    Category: Sports Grossing: 448410
+
+
+
+
 
 
 
