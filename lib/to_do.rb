@@ -10,7 +10,7 @@ class ToDo
 
       puts "---- TODO.rb ----"
 
-      # view_todos
+      view_todos
 
       puts "What would you like to do?"
       puts "1) Exit 2) Add Todo 3) Mark Todo As Complete"
@@ -27,23 +27,15 @@ class ToDo
     end
   end
 
-  # def view_todos
-  #   view_todos_by_status("Unfinished","no")
-  #   view_todos_by_status("Completed","yes")
-  # end
+  def view_todos
+    show_table = ToDos.select('*')
+    show_table.each do|item|
+     puts "Todo: #{item.todo}              Complete: #{item.complete}"
+   end
+     puts  "-------------------------------------------------------------------"
+ end
 
-  # def view_todos_by_status(header,status)
-  #   puts header
-  #   arr_name = []
-  #   @todos.each do |x|
-  #     if x["completed"] == status
-  #       arr_name.push(x["name"])
-  #     end
-  #   end
-  #   arr_name.each_with_index do |element, index|
-  #     puts "#{index+1}) #{element}"
-  #   end
-  # end
+
   def add_todo
       puts "Name of Todo > "
       input = gets.chomp
@@ -54,16 +46,6 @@ class ToDo
     puts "Which todo have you finished?"
     action = gets.chomp
     ToDos.where(:todo => action).update_all(:complete => 'yes')
-    # arr_index = 0
-    # @todos.each do |x|
-    #   if x["completed"] == "no"
-    #     arr_index = arr_index + 1
-    #     if arr_index == action
-    #       x["completed"] = "yes"
-    #       save!
-          # break
-    #     end
-    #   end
-    # end
+
   end
 end
